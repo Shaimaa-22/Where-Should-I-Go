@@ -32,4 +32,9 @@
 ---
 
 ## Project Structure
+├── index.html # Main HTML file
+├── styles.css # Custom styles
+├── script.js # Application logic
+└── README.md # You're here
+
 
