@@ -1,0 +1,281 @@
+/* Custom CSS for Where Should I Go App */
+
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --hover-transform: translateY(-5px);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+}
+
+.bg-gradient {
+    background: var(--bg-gradient);
+}
+
+.text-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Step Indicators */
+.step-indicator {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.step-indicator.active {
+    background: var(--primary-gradient);
+    color: white;
+    transform: scale(1.1);
+}
+
+.step-indicator.completed {
+    background: #28a745;
+    color: white;
+}
+
+.step-line {
+    width: 60px;
+    height: 3px;
+    background: #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.step-line.active {
+    background: var(--primary-gradient);
+}
+
+/* Step Content */
+.step-content {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.step-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cards */
+.mood-card, .time-card, .location-card {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease;
+}
+
+.mood-card:hover, .time-card:hover, .location-card:hover {
+    transform: var(--hover-transform);
+}
+
+/* Mood Buttons */
+.mood-btn {
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    padding: 20px 10px;
+    background: white;
+    transition: all 0.3s ease;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mood-btn:hover {
+    border-color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.mood-btn.selected {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.mood-emoji {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.mood-label {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.mood-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+/* Time Buttons */
+.time-btn {
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    padding: 20px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.time-btn:hover {
+    border-color: #28a745;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.2);
+}
+
+.time-btn.selected {
+    border-color: #28a745;
+    background: #28a745;
+    color: white;
+}
+
+.time-icon {
+    font-size: 1.5rem;
+}
+
+/* Location Status */
+.location-success {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.location-error {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* AI Suggestion Card */
+.ai-suggestion-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px;
+}
+
+.ai-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Place Cards */
+.place-card {
+    border-radius: 15px;
+    border: none;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.place-card:hover {
+    transform: var(--hover-transform);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.place-rating {
+    background: #ffc107;
+    color: #000;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.place-type {
+    background: #e9ecef;
+    color: #495057;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    text-transform: capitalize;
+}
+
+.place-status {
+    color: #28a745;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Gradient Button */
+.btn-gradient {
+    background: var(--primary-gradient);
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .display-3 {
+        font-size: 2.5rem;
+    }
+    
+    .mood-btn {
+        height: 100px;
+        padding: 15px 8px;
+    }
+    
+    .mood-emoji {
+        font-size: 1.5rem;
+    }
+    
+    .mood-label {
+        font-size: 0.8rem;
+    }
+    
+    .mood-desc {
+        font-size: 0.7rem;
+    }
+    
+    .step-line {
+        width: 40px;
+    }
+}
+
+/* Loading Animation */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Utility Classes */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
