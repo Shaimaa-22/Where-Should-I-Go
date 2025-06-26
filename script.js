@@ -4,11 +4,6 @@ class WhereToGoApp {
     this.selectedMood = null
     this.selectedTime = null
     this.userLocation = null
-
-    // API Configuration - IMPORTANT: Keep your API keys secure!
-    // In production, these should come from environment variables or a secure backend
-    this.OPENAI_API_KEY = null // Set this securely - don't hardcode it!
-
     this.init()
   }
 
@@ -235,129 +230,102 @@ class WhereToGoApp {
     if (currentHour >= 12 && currentHour < 17) timeOfDay = "afternoon"
     else if (currentHour >= 17) timeOfDay = "evening"
 
-    const prompt = `User details:
-- Mood: ${this.selectedMood}
-- Time available: ${this.selectedTime}
-- Time of day: ${timeOfDay}
+    // Enhanced AI suggestions based on mood and time
+    const suggestions = {
+      bored: `Since you're feeling bored and have ${this.selectedTime} to spare during this ${timeOfDay}, I'd recommend visiting a local entertainment venue, shopping area, or activity center! These places offer variety and excitement that can quickly lift your spirits and give you plenty to explore. Perfect for breaking out of that boredom and discovering something new!`,
 
-Based on the user's mood and available time, suggest a fun activity or type of place they should visit. Be encouraging and warm in your tone. Keep it to 2-3 sentences and focus on how the suggested activity will help with their current mood.
+      anxious: `When feeling anxious, especially during the ${timeOfDay} with ${this.selectedTime} available, a peaceful park, cozy café, or quiet library would be perfect for you. These calming environments can help you relax and unwind, giving you the mental space you need to feel better and find your center. Take some deep breaths and enjoy the tranquility.`,
 
-Examples:
-- If bored: suggest entertainment venues, shopping areas, or activity centers
-- If anxious: suggest peaceful parks, cozy cafés, or relaxing spaces
-- If curious: suggest museums, galleries, or cultural centers
-- If energetic: suggest gyms, sports facilities, or active recreation
-- If hungry: suggest restaurants, cafés, or food markets
-- If social: suggest bars, restaurants, or community spaces
-- If peaceful: suggest parks, libraries, or spas
-- If adventurous: suggest tourist attractions, outdoor activities, or unique spots`
+      curious: `Your curious mood is perfect for exploring a museum, art gallery, cultural center, or bookstore with your ${this.selectedTime} this ${timeOfDay}! These places will feed your desire to learn and discover something new and interesting. Let your curiosity lead the way to fascinating discoveries and inspiring experiences.`,
 
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${this.OPENAI_API_KEY}`, // You'll need to set this securely
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
-          max_tokens: 150,
-          temperature: 0.7,
-        }),
-      })
+      energetic: `With all that energy and ${this.selectedTime} to use it this ${timeOfDay}, you should head to a gym, sports facility, park for activities, or recreation center! It's the perfect way to channel your enthusiasm into something fun and rewarding while getting your body moving. Your energy deserves an outlet that matches your enthusiasm!`,
 
-      if (!response.ok) {
-        throw new Error("Failed to get AI suggestion")
-      }
+      hungry: `Time to satisfy that appetite! With ${this.selectedTime} available this ${timeOfDay}, I'd suggest exploring local restaurants, cafés, food markets, or even cooking classes where you can discover delicious meals and treats. Your taste buds are calling for an adventure, and there's nothing better than good food to lift your spirits!`,
 
-      const data = await response.json()
-      return data.choices[0].message.content.trim()
-    } catch (error) {
-      console.error("Error getting AI suggestion:", error)
-      // Fallback to enhanced mock suggestions
-      const suggestions = {
-        bored: `Since you're feeling bored and have ${this.selectedTime} to spare, I'd recommend visiting a local entertainment venue, shopping area, or activity center! These places offer variety and excitement that can quickly lift your spirits and give you plenty to explore.`,
+      social: `Since you're in a social mood and have ${this.selectedTime} this ${timeOfDay}, bars, restaurants, community centers, or social clubs would be ideal! These venues are great for meeting people, enjoying good company, and maybe making some new connections. Your social energy is contagious – share it with others!`,
 
-        anxious: `When feeling anxious, a peaceful park, cozy café, or quiet library would be perfect for you with your ${this.selectedTime} available. These calming environments can help you relax and unwind, giving you the mental space you need to feel better.`,
+      peaceful: `For a peaceful experience with your ${this.selectedTime} this ${timeOfDay}, consider visiting a park, library, spa, meditation center, or quiet café. These tranquil spaces will help you find the calm and serenity you're seeking in today's busy world. Sometimes the best therapy is simply finding a quiet moment for yourself.`,
 
-        curious: `Your curious mood is perfect for exploring a museum, art gallery, cultural center, or bookstore with your ${this.selectedTime}! These places will feed your desire to learn and discover something new and interesting.`,
-
-        energetic: `With all that energy and ${this.selectedTime} to use it, you should head to a gym, sports facility, park for activities, or recreation center! It's the perfect way to channel your enthusiasm into something fun and rewarding.`,
-
-        hungry: `Time to satisfy that appetite! With ${this.selectedTime} available, I'd suggest exploring local restaurants, cafés, food markets, or even cooking classes where you can discover delicious meals and treats.`,
-
-        social: `Since you're in a social mood and have ${this.selectedTime}, bars, restaurants, community centers, or social clubs would be ideal! These venues are great for meeting people and enjoying good company.`,
-
-        peaceful: `For a peaceful experience with your ${this.selectedTime}, consider visiting a park, library, spa, meditation center, or quiet café. These tranquil spaces will help you find the calm and serenity you're seeking.`,
-
-        adventurous: `Your adventurous spirit calls for tourist attractions, outdoor activities, hiking trails, or unique local spots with your ${this.selectedTime}! It's time to explore something new and exciting in your area.`,
-      }
-
-      return (
-        suggestions[this.selectedMood] ||
-        `I'd recommend exploring your local area to find something that matches your current ${this.selectedMood} mood and your available ${this.selectedTime}!`
-      )
+      adventurous: `Your adventurous spirit calls for tourist attractions, outdoor activities, hiking trails, or unique local spots with your ${this.selectedTime} this ${timeOfDay}! It's time to explore something new and exciting in your area. Adventure awaits around every corner – embrace the unknown and create some memorable experiences!`,
     }
+
+    // Simulate API delay for realistic experience
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    return (
+      suggestions[this.selectedMood] ||
+      `I'd recommend exploring your local area to find something that matches your current ${this.selectedMood} mood and your available ${this.selectedTime} this ${timeOfDay}!`
+    )
   }
 
   async getNearbyPlaces() {
-    // Mock places data - in a real app, you'd call a backend API
+    // Enhanced mock places data with more variety
     const mockPlaces = {
       bored: [
         {
-          name: "City Entertainment Center",
+          name: "City Entertainment Complex",
           type: "entertainment",
           rating: 4.3,
-          vicinity: "Downtown District",
+          vicinity: "Downtown Entertainment District",
           place_id: "1",
           opening_hours: { open_now: true },
         },
         {
-          name: "Grand Shopping Mall",
+          name: "Grand Shopping Plaza",
           type: "shopping_mall",
           rating: 4.1,
-          vicinity: "Commercial Area",
+          vicinity: "Commercial Center",
           place_id: "2",
           opening_hours: { open_now: true },
         },
         {
-          name: "Adventure Zone",
-          type: "amusement_park",
+          name: "Adventure Zone Arcade",
+          type: "amusement_center",
           rating: 4.5,
           vicinity: "Recreation District",
           place_id: "3",
           opening_hours: { open_now: true },
         },
+        {
+          name: "Escape Room Experience",
+          type: "entertainment",
+          rating: 4.7,
+          vicinity: "Fun Quarter",
+          place_id: "4",
+          opening_hours: { open_now: true },
+        },
       ],
       anxious: [
         {
-          name: "Serenity Park",
+          name: "Serenity Botanical Garden",
           type: "park",
-          rating: 4.7,
-          vicinity: "Green District",
-          place_id: "4",
+          rating: 4.8,
+          vicinity: "Green Oasis District",
+          place_id: "5",
           opening_hours: { open_now: true },
         },
         {
           name: "Tranquil Spa & Wellness",
           type: "spa",
-          rating: 4.8,
+          rating: 4.9,
           vicinity: "Wellness Quarter",
-          place_id: "5",
+          place_id: "6",
           opening_hours: { open_now: false },
         },
         {
-          name: "Peaceful Café",
+          name: "Peaceful Café & Books",
           type: "cafe",
-          rating: 4.4,
-          vicinity: "Quiet Street",
-          place_id: "6",
+          rating: 4.6,
+          vicinity: "Quiet Reading Corner",
+          place_id: "7",
+          opening_hours: { open_now: true },
+        },
+        {
+          name: "Meditation Garden",
+          type: "park",
+          rating: 4.7,
+          vicinity: "Zen District",
+          place_id: "8",
           opening_hours: { open_now: true },
         },
       ],
@@ -367,7 +335,7 @@ Examples:
           type: "museum",
           rating: 4.6,
           vicinity: "Cultural Quarter",
-          place_id: "7",
+          place_id: "9",
           opening_hours: { open_now: true },
         },
         {
@@ -375,7 +343,7 @@ Examples:
           type: "art_gallery",
           rating: 4.4,
           vicinity: "Arts District",
-          place_id: "8",
+          place_id: "10",
           opening_hours: { open_now: true },
         },
         {
@@ -383,17 +351,25 @@ Examples:
           type: "museum",
           rating: 4.5,
           vicinity: "Education Hub",
-          place_id: "9",
+          place_id: "11",
+          opening_hours: { open_now: true },
+        },
+        {
+          name: "Local History Museum",
+          type: "museum",
+          rating: 4.3,
+          vicinity: "Heritage District",
+          place_id: "12",
           opening_hours: { open_now: true },
         },
       ],
       energetic: [
         {
-          name: "PowerFit Gym",
+          name: "PowerFit Gym & Sports",
           type: "gym",
-          rating: 4.3,
+          rating: 4.4,
           vicinity: "Sports Complex",
-          place_id: "10",
+          place_id: "13",
           opening_hours: { open_now: true },
         },
         {
@@ -401,51 +377,67 @@ Examples:
           type: "sports_complex",
           rating: 4.5,
           vicinity: "Athletic District",
-          place_id: "11",
+          place_id: "14",
           opening_hours: { open_now: true },
         },
         {
-          name: "Adventure Park",
+          name: "Adventure Climbing Gym",
+          type: "gym",
+          rating: 4.6,
+          vicinity: "Adventure Zone",
+          place_id: "15",
+          opening_hours: { open_now: true },
+        },
+        {
+          name: "Outdoor Activity Park",
           type: "park",
           rating: 4.4,
           vicinity: "Recreation Area",
-          place_id: "12",
+          place_id: "16",
           opening_hours: { open_now: true },
         },
       ],
       hungry: [
         {
-          name: "Gourmet Bistro",
+          name: "Gourmet Bistro & Wine",
           type: "restaurant",
           rating: 4.7,
           vicinity: "Culinary District",
-          place_id: "13",
+          place_id: "17",
           opening_hours: { open_now: true },
         },
         {
-          name: "Artisan Bakery",
+          name: "Artisan Bakery & Café",
           type: "bakery",
           rating: 4.6,
           vicinity: "Food Street",
-          place_id: "14",
+          place_id: "18",
           opening_hours: { open_now: true },
         },
         {
-          name: "Local Food Market",
+          name: "Local Farmers Market",
           type: "market",
-          rating: 4.4,
+          rating: 4.5,
           vicinity: "Market Square",
-          place_id: "15",
+          place_id: "19",
+          opening_hours: { open_now: true },
+        },
+        {
+          name: "International Food Court",
+          type: "food_court",
+          rating: 4.3,
+          vicinity: "Dining Plaza",
+          place_id: "20",
           opening_hours: { open_now: true },
         },
       ],
       social: [
         {
-          name: "Social Hub Bar",
+          name: "Social Hub Rooftop Bar",
           type: "bar",
-          rating: 4.2,
+          rating: 4.4,
           vicinity: "Nightlife District",
-          place_id: "16",
+          place_id: "21",
           opening_hours: { open_now: true },
         },
         {
@@ -453,15 +445,23 @@ Examples:
           type: "restaurant",
           rating: 4.6,
           vicinity: "Social Quarter",
-          place_id: "17",
+          place_id: "22",
           opening_hours: { open_now: true },
         },
         {
-          name: "Events Center",
-          type: "event_venue",
+          name: "Live Music Venue",
+          type: "night_club",
           rating: 4.3,
           vicinity: "Entertainment Hub",
-          place_id: "18",
+          place_id: "23",
+          opening_hours: { open_now: true },
+        },
+        {
+          name: "Board Game Café",
+          type: "cafe",
+          rating: 4.5,
+          vicinity: "Social Gaming District",
+          place_id: "24",
           opening_hours: { open_now: true },
         },
       ],
@@ -471,7 +471,7 @@ Examples:
           type: "park",
           rating: 4.8,
           vicinity: "Peaceful District",
-          place_id: "19",
+          place_id: "25",
           opening_hours: { open_now: true },
         },
         {
@@ -479,48 +479,64 @@ Examples:
           type: "library",
           rating: 4.5,
           vicinity: "Knowledge Quarter",
-          place_id: "20",
+          place_id: "26",
           opening_hours: { open_now: true },
         },
         {
-          name: "Meditation Center",
+          name: "Meditation & Yoga Center",
           type: "wellness_center",
           rating: 4.7,
           vicinity: "Spiritual District",
-          place_id: "21",
+          place_id: "27",
+          opening_hours: { open_now: true },
+        },
+        {
+          name: "Quiet Lakeside Park",
+          type: "park",
+          rating: 4.6,
+          vicinity: "Nature Reserve",
+          place_id: "28",
           opening_hours: { open_now: true },
         },
       ],
       adventurous: [
         {
-          name: "Adventure Tours",
+          name: "Adventure Tours & Excursions",
           type: "tourist_attraction",
           rating: 4.6,
           vicinity: "Adventure Zone",
-          place_id: "22",
+          place_id: "29",
           opening_hours: { open_now: true },
         },
         {
-          name: "Exploration Park",
+          name: "Exploration Theme Park",
           type: "amusement_park",
           rating: 4.4,
           vicinity: "Adventure District",
-          place_id: "23",
+          place_id: "30",
           opening_hours: { open_now: true },
         },
         {
-          name: "Discovery Trail",
+          name: "Discovery Hiking Trail",
           type: "hiking_area",
           rating: 4.5,
           vicinity: "Nature Reserve",
-          place_id: "24",
+          place_id: "31",
+          opening_hours: { open_now: true },
+        },
+        {
+          name: "Urban Adventure Course",
+          type: "sports_complex",
+          rating: 4.3,
+          vicinity: "Outdoor Activity Zone",
+          place_id: "32",
           opening_hours: { open_now: true },
         },
       ],
     }
 
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    // Simulate API delay for realistic experience
+    await new Promise((resolve) => setTimeout(resolve, 2000))
 
     return mockPlaces[this.selectedMood] || mockPlaces.curious
   }
@@ -607,4 +623,3 @@ Examples:
 document.addEventListener("DOMContentLoaded", () => {
   window.app = new WhereToGoApp()
 })
- 
