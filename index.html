@@ -4,111 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Where Should I Go? - Mood-Based Location Suggestions</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container-fluid min-vh-100 bg-gradient">
+    <div class="container">
         <!-- Header -->
-        <div class="row justify-content-center pt-5">
-            <div class="col-12 text-center mb-4">
-                <h1 class="display-3 fw-bold text-gradient mb-3">Where Should I Go?</h1>
-                <p class="lead text-muted fs-4">Tell us your mood and we'll suggest the perfect nearby places!</p>
-            </div>
+        <div class="header">
+            <h1 class="title">Where Should I Go?</h1>
+            <p class="subtitle">Tell us your mood and we'll suggest the perfect nearby places!</p>
         </div>
 
         <!-- Progress Steps -->
-        <div class="row justify-content-center mb-5">
-            <div class="col-auto">
-                <div class="d-flex align-items-center">
-                    <div class="step-indicator active" data-step="1">
-                        <span>1</span>
-                    </div>
-                    <div class="step-line"></div>
-                    <div class="step-indicator" data-step="2">
-                        <span>2</span>
-                    </div>
-                    <div class="step-line"></div>
-                    <div class="step-indicator" data-step="3">
-                        <span>3</span>
-                    </div>
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="step-indicator active" data-step="1">
+                    <span>1</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="2">
+                    <span>2</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="3">
+                    <span>3</span>
                 </div>
             </div>
         </div>
 
         <!-- Step 1: Mood Selection -->
         <div id="step1" class="step-content active">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="card shadow-lg border-0 mood-card">
-                        <div class="card-header bg-primary text-white text-center py-4">
-                            <h3 class="mb-0"><i class="bi bi-emoji-smile me-2"></i>What's your mood?</h3>
-                        </div>
-                        <div class="card-body p-4">
-                            <div class="row g-3" id="moodOptions">
-                                <div class="col-6 col-md-3">
-                                    <button class="btn mood-btn w-100 h-100" data-mood="bored">
-                                        <div class="mood-emoji">😴</div>
-                                        <div class="mood-label">Bored</div>
-                                        <small class="mood-desc">Need excitement</small>
-                                    </button>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <button class="btn mood-btn w-100 h-100" data-mood="anxious">
-                                        <div class="mood-emoji">😰</div>
-                                        <div class="mood-label">Anxious</div>
-                                        <small class="mood-desc">Need to relax</small>
-                                    </button>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <button class="btn mood-btn w-100 h-100" data-mood="curious">
-                                        <div class="mood-emoji">🤔</div>
-                                        <div class="mood-label">Curious</div>
-                                        <small class="mood-desc">Want to explore</small>
-                                    </button>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <button class="btn mood-btn w-100 h-100" data-mood="energetic">
-                                        <div class="mood-emoji">⚡</div>
-                                        <div class="mood-label">Energetic</div>
-                                        <small class="mood-desc">Full of energy</small>
-                                    </button>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <button class="btn mood-btn w-100 h-100" data-mood="hungry">
-                                        <div class="mood-emoji">🍽️</div>
-                                        <div class="mood-label">Hungry</div>
-                                        <small class="mood-desc">Looking for food</small>
-                                    </button>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <button class="btn mood-btn w-100 h-100" data-mood="social">
-                                        <div class="mood-emoji">👥</div>
-                                        <div class="mood-label">Social</div>
-                                        <small class="mood-desc">Want to meet people</small>
-                                    </button>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <button class="btn mood-btn w-100 h-100" data-mood="peaceful">
-                                        <div class="mood-emoji">🧘</div>
-                                        <div class="mood-label">Peaceful</div>
-                                        <small class="mood-desc">Seeking calm</small>
-                                    </button>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <button class="btn mood-btn w-100 h-100" data-mood="adventurous">
-                                        <div class="mood-emoji">🗺️</div>
-                                        <div class="mood-label">Adventurous</div>
-                                        <small class="mood-desc">Ready for adventure</small>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+            <div class="card">
+                <div class="card-header mood-header">
+                    <h2>😊 What's your mood?</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mood-grid">
+                        <button class="mood-btn" data-mood="bored">
+                            <div class="mood-emoji">😴</div>
+                            <div class="mood-label">Bored</div>
+                            <div class="mood-desc">Need excitement</div>
+                        </button>
+                        <button class="mood-btn" data-mood="anxious">
+                            <div class="mood-emoji">😰</div>
+                            <div class="mood-label">Anxious</div>
+                            <div class="mood-desc">Need to relax</div>
+                        </button>
+                        <button class="mood-btn" data-mood="curious">
+                            <div class="mood-emoji">🤔</div>
+                            <div class="mood-label">Curious</div>
+                            <div class="mood-desc">Want to explore</div>
+                        </button>
+                        <button class="mood-btn" data-mood="energetic">
+                            <div class="mood-emoji">⚡</div>
+                            <div class="mood-label">Energetic</div>
+                            <div class="mood-desc">Full of energy</div>
+                        </button>
+                        <button class="mood-btn" data-mood="hungry">
+                            <div class="mood-emoji">🍽️</div>
+                            <div class="mood-label">Hungry</div>
+                            <div class="mood-desc">Looking for food</div>
+                        </button>
+                        <button class="mood-btn" data-mood="social">
+                            <div class="mood-emoji">👥</div>
+                            <div class="mood-label">Social</div>
+                            <div class="mood-desc">Want to meet people</div>
+                        </button>
+                        <button class="mood-btn" data-mood="peaceful">
+                            <div class="mood-emoji">🧘</div>
+                            <div class="mood-label">Peaceful</div>
+                            <div class="mood-desc">Seeking calm</div>
+                        </button>
+                        <button class="mood-btn" data-mood="adventurous">
+                            <div class="mood-emoji">🗺️</div>
+                            <div class="mood-label">Adventurous</div>
+                            <div class="mood-desc">Ready for adventure</div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -116,52 +86,40 @@
 
         <!-- Step 2: Time Selection -->
         <div id="step2" class="step-content">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <div class="card shadow-lg border-0 time-card">
-                        <div class="card-header bg-success text-white text-center py-4">
-                            <h3 class="mb-0"><i class="bi bi-clock me-2"></i>How much time do you have?</h3>
-                        </div>
-                        <div class="card-body p-4">
-                            <div class="d-grid gap-3" id="timeOptions">
-                                <button class="btn time-btn text-start" data-time="30min">
-                                    <div class="d-flex align-items-center">
-                                        <div class="time-icon me-3">⏰</div>
-                                        <div>
-                                            <div class="fw-bold">30 minutes</div>
-                                            <small class="text-muted">Quick activity</small>
-                                        </div>
-                                    </div>
-                                </button>
-                                <button class="btn time-btn text-start" data-time="1hour">
-                                    <div class="d-flex align-items-center">
-                                        <div class="time-icon me-3">🕐</div>
-                                        <div>
-                                            <div class="fw-bold">1 hour</div>
-                                            <small class="text-muted">Short outing</small>
-                                        </div>
-                                    </div>
-                                </button>
-                                <button class="btn time-btn text-start" data-time="2hours">
-                                    <div class="d-flex align-items-center">
-                                        <div class="time-icon me-3">🕑</div>
-                                        <div>
-                                            <div class="fw-bold">2 hours</div>
-                                            <small class="text-muted">Half day adventure</small>
-                                        </div>
-                                    </div>
-                                </button>
-                                <button class="btn time-btn text-start" data-time="fullday">
-                                    <div class="d-flex align-items-center">
-                                        <div class="time-icon me-3">🌞</div>
-                                        <div>
-                                            <div class="fw-bold">Full day</div>
-                                            <small class="text-muted">All day experience</small>
-                                        </div>
-                                    </div>
-                                </button>
+            <div class="card">
+                <div class="card-header time-header">
+                    <h2>⏰ How much time do you have?</h2>
+                </div>
+                <div class="card-body">
+                    <div class="time-options">
+                        <button class="time-btn" data-time="30min">
+                            <div class="time-icon">⏰</div>
+                            <div class="time-info">
+                                <div class="time-label">30 minutes</div>
+                                <div class="time-desc">Quick activity</div>
                             </div>
-                        </div>
+                        </button>
+                        <button class="time-btn" data-time="1hour">
+                            <div class="time-icon">🕐</div>
+                            <div class="time-info">
+                                <div class="time-label">1 hour</div>
+                                <div class="time-desc">Short outing</div>
+                            </div>
+                        </button>
+                        <button class="time-btn" data-time="2hours">
+                            <div class="time-icon">🕑</div>
+                            <div class="time-info">
+                                <div class="time-label">2 hours</div>
+                                <div class="time-desc">Half day adventure</div>
+                            </div>
+                        </button>
+                        <button class="time-btn" data-time="fullday">
+                            <div class="time-icon">🌞</div>
+                            <div class="time-info">
+                                <div class="time-label">Full day</div>
+                                <div class="time-desc">All day experience</div>
+                            </div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -169,105 +127,70 @@
 
         <!-- Step 3: Location -->
         <div id="step3" class="step-content">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <div class="card shadow-lg border-0 location-card">
-                        <div class="card-header bg-warning text-dark text-center py-4">
-                            <h3 class="mb-0"><i class="bi bi-geo-alt me-2"></i>Where are you?</h3>
-                        </div>
-                        <div class="card-body p-4 text-center">
-                            <div id="locationContent">
-                                <p class="text-muted mb-4">We need your location to find nearby places</p>
-                                <button id="getLocationBtn" class="btn btn-warning btn-lg">
-                                    <i class="bi bi-geo-alt-fill me-2"></i>Get My Location
-                                </button>
-                            </div>
-                            <div id="locationStatus" class="mt-3"></div>
-                        </div>
-                    </div>
+            <div class="card">
+                <div class="card-header location-header">
+                    <h2>📍 Where are you?</h2>
+                </div>
+                <div class="card-body location-body">
+                    <p class="location-text">We need your location to find nearby places</p>
+                    <button id="getLocationBtn" class="location-btn">
+                        📍 Get My Location
+                    </button>
+                    <div id="locationStatus" class="location-status"></div>
                 </div>
             </div>
         </div>
 
         <!-- Results -->
         <div id="results" class="step-content">
-            <div class="row justify-content-center">
-                <div class="col-12">
-                    <div class="text-center mb-4">
-                        <h2 class="display-5 fw-bold text-gradient">Here's What We Found!</h2>
-                        <button id="startOverBtn" class="btn btn-outline-primary mt-2">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Start Over
-                        </button>
-                    </div>
-                    
-                    <!-- AI Suggestion -->
-                    <div class="row justify-content-center mb-5">
-                        <div class="col-lg-8">
-                            <div class="card ai-suggestion-card shadow-lg border-0">
-                                <div class="card-body p-4">
-                                    <div class="d-flex align-items-start">
-                                        <div class="ai-icon me-3">
-                                            <i class="bi bi-robot"></i>
-                                        </div>
-                                        <div>
-                                            <h5 class="card-title text-primary mb-2">AI Suggestion</h5>
-                                            <p id="aiSuggestionText" class="card-text fs-5 mb-0"></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="results-header">
+                <h1 class="results-title">Here's What We Found!</h1>
+                <button id="startOverBtn" class="start-over-btn">
+                    🔄 Start Over
+                </button>
+            </div>
+            
+            <!-- AI Suggestion -->
+            <div id="aiSuggestionCard" class="ai-suggestion-card" style="display: none;">
+                <div class="ai-icon">🤖</div>
+                <div class="ai-content">
+                    <h3>AI Suggestion</h3>
+                    <p id="aiSuggestionText"></p>
+                </div>
+            </div>
 
-                    <!-- Places Grid -->
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <h3 class="text-center mb-4">Nearby Places for You</h3>
-                            <div id="placesGrid" class="row g-4">
-                                <!-- Places will be populated by JavaScript -->
-                            </div>
-                        </div>
-                    </div>
+            <!-- Places Grid -->
+            <div class="places-section">
+                <h2 class="places-title">Nearby Places for You</h2>
+                <div id="placesGrid" class="places-grid">
+                    <!-- Places will be populated by JavaScript -->
                 </div>
             </div>
         </div>
 
         <!-- Navigation -->
-        <div class="row justify-content-center mt-5 pb-5">
-            <div class="col-auto">
-                <div class="d-flex gap-3">
-                    <button id="backBtn" class="btn btn-outline-secondary btn-lg" style="display: none;">
-                        <i class="bi bi-arrow-left me-2"></i>Back
-                    </button>
-                    <button id="nextBtn" class="btn btn-primary btn-lg" disabled>
-                        Next<i class="bi bi-arrow-right ms-2"></i>
-                    </button>
-                    <button id="getRecommendationsBtn" class="btn btn-gradient btn-lg" style="display: none;">
-                        <i class="bi bi-stars me-2"></i>Get My Recommendations!
-                    </button>
-                </div>
-            </div>
+        <div class="navigation">
+            <button id="backBtn" class="nav-btn secondary" style="display: none;">
+                ← Back
+            </button>
+            <button id="nextBtn" class="nav-btn primary" disabled>
+                Next →
+            </button>
+            <button id="getRecommendationsBtn" class="nav-btn gradient" style="display: none;">
+                ✨ Get My Recommendations!
+            </button>
         </div>
 
         <!-- Loading Modal -->
-        <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body text-center p-5">
-                        <div class="spinner-border text-primary mb-3" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <h5>Finding perfect places for you...</h5>
-                        <p class="text-muted mb-0">This may take a few moments</p>
-                    </div>
-                </div>
+        <div id="loadingModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="loading-spinner"></div>
+                <h3>Finding perfect places for you...</h3>
+                <p>This may take a few moments</p>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
