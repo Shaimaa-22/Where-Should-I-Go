@@ -33,9 +33,9 @@ class LocationService {
           reject(message);
         },
         {
-enableHighAccuracy: false,
+          enableHighAccuracy: false,
           timeout: 30000,
-          maximumAge: 300000,
+          maximumAge: Infinity,
         }
       );
     });
