@@ -156,7 +156,16 @@ class WhereToGoApp {
       throw new Error("Failed to fetch places");
     }
 
-    return await response.json();
+    const places = await response.json();
+
+return places.map((place) => ({
+  name: place.name || "Unknown place",
+  type: place.types?.[0] || "place",
+  rating: place.rating || "N/A",
+  vicinity: place.vicinity || place.formatted_address || "Nearby location",
+  place_id: place.place_id,
+  opening_hours: place.opening_hours || { open_now: false },
+}));
   }
 
   async getAISuggestion(places) {
