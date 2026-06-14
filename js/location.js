@@ -33,7 +33,7 @@ class LocationService {
           reject(message);
         },
         {
-          enableHighAccuracy: true,
+enableHighAccuracy: false,
           timeout: 30000,
           maximumAge: 300000,
         }
