@@ -8,21 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const moodMap = {
-  bored: "tourist_attraction",
-  anxious: "park",
-  curious: "museum",
-  energetic: "gym",
-  hungry: "restaurant",
-  social: "cafe",
-  peaceful: "park",
-  adventurous: "tourist_attraction",
-};
-
 app.get("/", (req, res) => {
   res.json({
     status: "Backend Running",
-    googleKey: !!process.env.GOOGLE_PLACES_API_KEY,
+    geoapifyKey: !!process.env.GEOAPIFY_API_KEY,
     openrouterKey: !!process.env.OPENROUTER_API_KEY,
   });
 });
@@ -45,33 +34,45 @@ app.post("/api/places", async (req, res) => {
       });
     }
 
-    const type = moodMap[mood] || "restaurant";
+    const categories = {
+      bored: "entertainment",
+      anxious: "leisure.park",
+      curious: "education",
+      energetic: "sport",
+      hungry: "catering.restaurant",
+      social: "catering.cafe",
+      peaceful: "leisure.park",
+      adventurous: "tourism",
+    };
 
-    const response = await axios.get(
-      "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
-      {
-        params: {
-          location: `${lat},${lng}`,
-          radius: 5000,
-          type,
-          key: process.env.GOOGLE_PLACES_API_KEY,
-        },
-      }
-    );
+    const category = categories[mood] || "catering.restaurant";
 
-    console.log("GOOGLE STATUS:", response.data.status);
-    console.log("GOOGLE ERROR:", response.data.error_message || "No error");
+    const response = await axios.get("https://api.geoapify.com/v2/places", {
+      params: {
+        categories: category,
+        filter: `circle:${lng},${lat},5000`,
+        bias: `proximity:${lng},${lat}`,
+        limit: 8,
+        apiKey: process.env.GEOAPIFY_API_KEY,
+      },
+    });
 
-    if (response.data.status !== "OK" && response.data.status !== "ZERO_RESULTS") {
-      return res.status(500).json({
-        error: response.data.status,
-        message: response.data.error_message,
-      });
-    }
+    console.log("GEOAPIFY RESULTS:", response.data.features.length);
 
-    res.json(response.data.results.slice(0, 8));
+    const places = response.data.features.map((place) => ({
+      name: place.properties.name || "Unknown Place",
+      vicinity: place.properties.formatted || "Nearby location",
+      rating: 4.5,
+      type: place.properties.categories?.[0] || "place",
+      opening_hours: {
+        open_now: true,
+      },
+      place_id: place.properties.place_id,
+    }));
+
+    res.json(places);
   } catch (err) {
-    console.error("PLACES ERROR:", err.response?.data || err.message);
+    console.error("GEOAPIFY ERROR:", err.response?.data || err.message);
 
     res.status(500).json({
       error: "Failed to fetch places",
@@ -94,7 +95,8 @@ app.post("/api/suggestion", async (req, res) => {
 
     if (places.length === 0) {
       return res.json({
-        suggestion: "I could not find nearby places for this mood, but try changing your mood or expanding your search area.",
+        suggestion:
+          "I could not find nearby places for this mood, but try changing your mood or expanding your search area.",
       });
     }
 
