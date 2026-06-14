@@ -1,4 +1,12 @@
 class UI {
+  static showElement(element) {
+    element.classList.remove("hidden");
+  }
+
+  static hideElement(element) {
+    element.classList.add("hidden");
+  }
+
   static updateSteps(currentStep) {
     document.querySelectorAll(".step-indicator").forEach((indicator, index) => {
       const stepNum = index + 1;
@@ -34,47 +42,49 @@ class UI {
     const nextBtn = document.getElementById("nextBtn");
     const recommendationsBtn = document.getElementById("getRecommendationsBtn");
 
-    backBtn.style.display =
-      app.currentStep > 1 ? "block" : "none";
+    if (app.currentStep > 1) {
+      UI.showElement(backBtn);
+    } else {
+      UI.hideElement(backBtn);
+    }
 
     if (app.currentStep < 3) {
-      nextBtn.style.display = "block";
-      recommendationsBtn.style.display = "none";
+      UI.showElement(nextBtn);
+      UI.hideElement(recommendationsBtn);
 
       let canProceed = false;
 
-      if (app.currentStep === 1 && app.selectedMood) {
-        canProceed = true;
-      }
-
-      if (app.currentStep === 2 && app.selectedTime) {
-        canProceed = true;
-      }
+      if (app.currentStep === 1 && app.selectedMood) canProceed = true;
+      if (app.currentStep === 2 && app.selectedTime) canProceed = true;
 
       nextBtn.disabled = !canProceed;
     } else {
-      nextBtn.style.display = "none";
+      UI.hideElement(nextBtn);
 
-      recommendationsBtn.style.display =
-        app.userLocation ? "block" : "none";
+      if (app.userLocation) {
+        UI.showElement(recommendationsBtn);
+      } else {
+        UI.hideElement(recommendationsBtn);
+      }
     }
   }
 
-static showLoading() {
-  document.getElementById("loadingModal").classList.remove("hidden");
-}
+  static showLoading() {
+    document.getElementById("loadingModal").classList.remove("hidden");
+  }
 
-static hideLoading() {
-  document.getElementById("loadingModal").classList.add("hidden");
-}
+  static hideLoading() {
+    document.getElementById("loadingModal").classList.add("hidden");
+  }
 
   static displayResults(aiSuggestion, places) {
     const aiCard = document.getElementById("aiSuggestionCard");
     const aiText = document.getElementById("aiSuggestionText");
+    const placesGrid = document.getElementById("placesGrid");
 
     aiText.textContent = aiSuggestion;
-aiCard.classList.remove("hidden");
-    const placesGrid = document.getElementById("placesGrid");
+    aiCard.classList.remove("hidden");
+
     placesGrid.innerHTML = "";
 
     places.forEach((place) => {
@@ -90,7 +100,6 @@ aiCard.classList.remove("hidden");
 
   static createPlaceCard(place) {
     const card = document.createElement("div");
-
     card.className = "place-card";
 
     const formatType = (type) => {
@@ -109,31 +118,19 @@ aiCard.classList.remove("hidden");
         }
       </div>
 
-      <p class="place-address">
-        📍 ${place.vicinity}
-      </p>
+      <p class="place-address">📍 ${place.vicinity}</p>
 
       <div class="place-info">
-        <span class="place-type">
-          ${formatType(place.type)}
-        </span>
+        <span class="place-type">${formatType(place.type)}</span>
 
         <span class="place-status ${
-          place.opening_hours?.open_now
-            ? "open"
-            : "closed"
+          place.opening_hours?.open_now ? "open" : "closed"
         }">
-          🕐 ${
-            place.opening_hours?.open_now
-              ? "Open Now"
-              : "Closed"
-          }
+          🕐 ${place.opening_hours?.open_now ? "Open Now" : "Closed"}
         </span>
       </div>
 
-      <button class="place-btn">
-        🗺️ View on Maps
-      </button>
+      <button class="place-btn">🗺️ View on Maps</button>
     `;
 
     card.querySelector(".place-btn").addEventListener("click", () => {
@@ -144,14 +141,8 @@ aiCard.classList.remove("hidden");
   }
 
   static openInMaps(name, vicinity) {
-    const query = encodeURIComponent(
-      `${name} ${vicinity}`
-    );
-
-    window.open(
-      `https://www.google.com/maps/search/${query}`,
-      "_blank"
-    );
+    const query = encodeURIComponent(`${name} ${vicinity}`);
+    window.open(`https://www.google.com/maps/search/${query}`, "_blank");
   }
 }
 
