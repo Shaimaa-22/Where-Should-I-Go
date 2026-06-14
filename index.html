@@ -1,854 +1,175 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Where Should I Go? | Real place finder</title>
-  <style>
-    /* ----- MODERN GLASS DESIGN — NO AI BRANDING, REALISTIC FEEL ----- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
-      background: radial-gradient(circle at 10% 30%, #1a2a3a, #0f1724);
-      min-height: 100vh;
-      color: #eef2ff;
-      line-height: 1.4;
-    }
-
-    /* subtle noise texture for realism */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDYiLz48L3N2Zz4=');
-      background-repeat: repeat;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.2;
-    }
-
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 1.5rem 1.8rem 3rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* header — clean & human */
-    .header {
-      text-align: center;
-      margin-bottom: 2rem;
-      backdrop-filter: blur(12px);
-      background: rgba(15, 25, 35, 0.55);
-      border-radius: 2.5rem;
-      padding: 2rem 1.2rem;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
-    }
-
-    .title {
-      font-size: 3rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      background: linear-gradient(120deg, #ffffff, #b9d0ff);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      margin-bottom: 0.5rem;
-    }
-
-    .subtitle {
-      font-size: 1.1rem;
-      color: #cddcec;
-      font-weight: 450;
-    }
-
-    /* progress steps */
-    .progress-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-    .progress-steps {
-      display: flex;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.35);
-      backdrop-filter: blur(12px);
-      padding: 0.8rem 2rem;
-      border-radius: 5rem;
-      gap: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .step-indicator {
-      width: 48px;
-      height: 48px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #a0b8d0;
-      transition: all 0.2s ease;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .step-indicator.active {
-      background: #3b82f6;
-      color: white;
-      box-shadow: 0 0 12px rgba(59,130,246,0.5);
-      transform: scale(1.05);
-      border-color: #fff6;
-    }
-    .step-indicator.completed {
-      background: #10b981;
-      color: white;
-      border-color: #34d399;
-    }
-    .step-line {
-      width: 70px;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-    }
-    .step-line.active {
-      background: linear-gradient(90deg, #3b82f6, #a855f7);
-    }
-
-    /* cards */
-    .card {
-      background: rgba(20, 30, 45, 0.7);
-      backdrop-filter: blur(18px);
-      border-radius: 2rem;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      overflow: hidden;
-      max-width: 1000px;
-      margin: 0 auto;
-      transition: 0.2s;
-      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.3);
-    }
-    .card-header {
-      padding: 1.5rem 2rem;
-      background: rgba(255, 255, 255, 0.02);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .card-header h2 {
-      font-size: 1.9rem;
-      font-weight: 600;
-      letter-spacing: -0.3px;
-    }
-    .card-body {
-      padding: 2rem;
-    }
-
-    /* mood grid — realistic tactile buttons */
-    .mood-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1.2rem;
-    }
-    .mood-btn {
-      background: rgba(30, 45, 65, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1.8rem;
-      padding: 1.2rem 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      backdrop-filter: blur(4px);
-    }
-    .mood-btn:hover {
-      background: #2c405c;
-      transform: translateY(-3px);
-      border-color: rgba(255, 215, 120, 0.6);
-    }
-    .mood-btn.selected {
-      background: #2c5f8a;
-      border-color: #ffd966;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
-    }
-    .mood-emoji {
-      font-size: 2.5rem;
-    }
-    .mood-label {
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    .mood-desc {
-      font-size: 0.75rem;
-      color: #b9cef0;
-    }
-
-    /* time buttons */
-    .time-options {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .time-btn {
-      background: rgba(30, 45, 65, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 1.5rem;
-      padding: 1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .time-btn:hover {
-      background: #2f4565;
-      transform: translateX(6px);
-    }
-    .time-btn.selected {
-      background: #1f5e3c;
-      border-left: 6px solid #6ee7b7;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-    }
-    .time-icon {
-      font-size: 2rem;
-    }
-    .time-label {
-      font-weight: 700;
-      font-size: 1.25rem;
-    }
-    .time-desc {
-      font-size: 0.8rem;
-      color: #b9d0f0;
-    }
-
-    /* location */
-    .location-body {
-      text-align: center;
-    }
-    .location-text {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-    .location-btn {
-      background: #2b4f6c;
-      border: none;
-      color: white;
-      font-weight: 600;
-      padding: 0.9rem 2rem;
-      border-radius: 3rem;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: 0.2s;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-      margin-bottom: 1rem;
-    }
-    .location-btn:hover {
-      background: #3e6a8c;
-      transform: scale(1.02);
-    }
-    .location-status {
-      font-size: 0.9rem;
-    }
-    .status-success {
-      color: #9befb5;
-      background: rgba(16,185,129,0.2);
-      padding: 0.5rem 1rem;
-      border-radius: 2rem;
-      display: inline-block;
-    }
-    .status-error {
-      color: #fca5a5;
-    }
-
-    /* results section */
-    .results-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(8px);
-      border-radius: 2rem;
-      padding: 1rem 2rem;
-    }
-    .results-title {
-      font-size: 2rem;
-      font-weight: 700;
-    }
-    .start-over-btn {
-      background: rgba(255,255,240,0.12);
-      border: 1px solid rgba(255,255,200,0.3);
-      padding: 0.6rem 1.2rem;
-      border-radius: 3rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .start-over-btn:hover {
-      background: rgba(255,255,240,0.25);
-    }
-
-    /* no AI suggestion card — removed AI theme, making it look like a "curated tip" */
-    .curated-tip {
-      background: rgba(45, 70, 100, 0.75);
-      backdrop-filter: blur(12px);
-      border-left: 6px solid #ffb347;
-      border-radius: 1.6rem;
-      padding: 1.2rem 1.8rem;
-      margin-bottom: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-    }
-    .tip-icon {
-      font-size: 2rem;
-      background: rgba(0,0,0,0.3);
-      width: 54px;
-      height: 54px;
-      border-radius: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .tip-content h4 {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-    }
-    .tip-content p {
-      color: #f0e6d0;
-    }
-
-    .places-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
-    .place-card {
-      background: rgba(20, 28, 40, 0.75);
-      backdrop-filter: blur(8px);
-      border-radius: 1.5rem;
-      padding: 1.3rem;
-      border: 1px solid rgba(255,255,220,0.15);
-      transition: 0.2s;
-    }
-    .place-card:hover {
-      transform: translateY(-4px);
-      background: rgba(30, 45, 65, 0.85);
-    }
-    .place-name {
-      font-size: 1.3rem;
-      font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-    }
-    .place-rating {
-      background: #eab30820;
-      padding: 0.2rem 0.6rem;
-      border-radius: 2rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #ffdf7e;
-    }
-    .place-address {
-      font-size: 0.8rem;
-      margin: 0.6rem 0;
-      opacity: 0.8;
-    }
-    .place-info {
-      display: flex;
-      justify-content: space-between;
-      margin: 0.8rem 0;
-    }
-    .place-type {
-      background: rgba(100,120,150,0.5);
-      padding: 0.2rem 0.8rem;
-      border-radius: 30px;
-      font-size: 0.7rem;
-      text-transform: capitalize;
-    }
-    .place-status.open {
-      color: #6ee7b7;
-    }
-    .place-status.closed {
-      color: #f9a8d4;
-    }
-    .place-btn {
-      width: 100%;
-      background: #406d8e;
-      border: none;
-      border-radius: 2rem;
-      padding: 0.6rem;
-      font-weight: 500;
-      color: white;
-      cursor: pointer;
-      margin-top: 0.8rem;
-      transition: 0.2s;
-    }
-    .place-btn:hover {
-      background: #5688ae;
-    }
-
-    .navigation {
-      display: flex;
-      justify-content: center;
-      gap: 1.2rem;
-      margin-top: 2.5rem;
-    }
-    .nav-btn {
-      padding: 0.8rem 2rem;
-      border-radius: 3rem;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      background: rgba(25, 35, 50, 0.9);
-      backdrop-filter: blur(8px);
-      color: white;
-      transition: 0.2s;
-      font-size: 1rem;
-    }
-    .nav-btn.primary {
-      background: #2563eb;
-      box-shadow: 0 4px 12px #1e3a8a40;
-    }
-    .nav-btn.primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .nav-btn.secondary {
-      background: #334155;
-    }
-    .nav-btn.gradient {
-      background: #6b21a5;
-    }
-    .hidden {
-      display: none !important;
-    }
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(10px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background: #1e2a3a;
-      border-radius: 2rem;
-      padding: 2rem;
-      text-align: center;
-      max-width: 280px;
-    }
-    .loading-spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid #3b82f6;
-      border-top-color: #ffb347;
-      border-radius: 50%;
-      margin: 0 auto 1rem;
-      animation: spin 1s infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media (max-width: 700px) {
-      .container { padding: 1rem; }
-      .title { font-size: 2.2rem; }
-      .mood-grid { grid-template-columns: repeat(2,1fr); }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Where Should I Go?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-<main class="container">
-  <header class="header">
-    <h1 class="title">Where Should I Go?</h1>
-    <p class="subtitle">Tell us your mood & time — get real nearby spots (no fake AI hype)</p>
-  </header>
+  <main class="container">
 
-  <div class="progress-container">
-    <div class="progress-steps">
-      <div class="step-indicator active" data-step="1"><span>1</span></div>
-      <div class="step-line"></div>
-      <div class="step-indicator" data-step="2"><span>2</span></div>
-      <div class="step-line"></div>
-      <div class="step-indicator" data-step="3"><span>3</span></div>
-    </div>
-  </div>
+    <header class="header">
+      <h1 class="title">Where Should I Go?</h1>
+      <p class="subtitle">Tell us your mood and we'll suggest the perfect nearby places!</p>
+    </header>
 
-  <!-- STEP 1: MOOD -->
-  <section id="step1" class="step-content active">
-    <div class="card">
-      <div class="card-header"><h2>😊 What's your mood today?</h2></div>
-      <div class="card-body">
-        <div class="mood-grid" id="moodGrid">
-          <!-- moods injected via js but also static for clarity: -->
+    <section class="progress-container">
+      <div class="progress-steps">
+        <div class="step-indicator active" data-step="1"><span>1</span></div>
+        <div class="step-line"></div>
+        <div class="step-indicator" data-step="2"><span>2</span></div>
+        <div class="step-line"></div>
+        <div class="step-indicator" data-step="3"><span>3</span></div>
+      </div>
+    </section>
+
+    <section id="step1" class="step-content active">
+      <div class="card">
+        <div class="card-header">
+          <h2>😊 What's your mood?</h2>
+        </div>
+        <div class="card-body">
+          <div class="mood-grid">
+            <button class="mood-btn" data-mood="bored">
+              <span class="mood-emoji">😴</span>
+              <span class="mood-label">Bored</span>
+              <span class="mood-desc">Need excitement</span>
+            </button>
+
+            <button class="mood-btn" data-mood="anxious">
+              <span class="mood-emoji">😰</span>
+              <span class="mood-label">Anxious</span>
+              <span class="mood-desc">Need to relax</span>
+            </button>
+
+            <button class="mood-btn" data-mood="curious">
+              <span class="mood-emoji">🤔</span>
+              <span class="mood-label">Curious</span>
+              <span class="mood-desc">Want to explore</span>
+            </button>
+
+            <button class="mood-btn" data-mood="energetic">
+              <span class="mood-emoji">⚡</span>
+              <span class="mood-label">Energetic</span>
+              <span class="mood-desc">Full of energy</span>
+            </button>
+
+            <button class="mood-btn" data-mood="hungry">
+              <span class="mood-emoji">🍽️</span>
+              <span class="mood-label">Hungry</span>
+              <span class="mood-desc">Looking for food</span>
+            </button>
+
+            <button class="mood-btn" data-mood="social">
+              <span class="mood-emoji">👥</span>
+              <span class="mood-label">Social</span>
+              <span class="mood-desc">Want to meet people</span>
+            </button>
+
+            <button class="mood-btn" data-mood="peaceful">
+              <span class="mood-emoji">🧘</span>
+              <span class="mood-label">Peaceful</span>
+              <span class="mood-desc">Seeking calm</span>
+            </button>
+
+            <button class="mood-btn" data-mood="adventurous">
+              <span class="mood-emoji">🗺️</span>
+              <span class="mood-label">Adventurous</span>
+              <span class="mood-desc">Ready for adventure</span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- STEP 2: TIME -->
-  <section id="step2" class="step-content">
-    <div class="card">
-      <div class="card-header"><h2>⏰ How much time do you have?</h2></div>
-      <div class="card-body">
-        <div class="time-options" id="timeOptions"></div>
+    </section>
+    <section id="step2" class="step-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>⏰ How much time do you have?</h2>
+        </div>
+        <div class="card-body">
+          <div class="time-options">
+            <button class="time-btn" data-time="30min">
+              <span class="time-icon">⏰</span>
+              <span class="time-info">
+                <span class="time-label">30 minutes</span>
+                <span class="time-desc">Quick activity</span>
+              </span>
+            </button>
+            <button class="time-btn" data-time="1hour">
+              <span class="time-icon">🕐</span>
+              <span class="time-info">
+                <span class="time-label">1 hour</span>
+                <span class="time-desc">Short outing</span>
+              </span>
+            </button>
+            <button class="time-btn" data-time="2hours">
+              <span class="time-icon">🕑</span>
+              <span class="time-info">
+                <span class="time-label">2 hours</span>
+                <span class="time-desc">Half day adventure</span>
+              </span>
+            </button>
+            <button class="time-btn" data-time="fullday">
+              <span class="time-icon">🌞</span>
+              <span class="time-info">
+                <span class="time-label">Full day</span>
+                <span class="time-desc">All day experience</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="step3" class="step-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>📍 Where are you?</h2>
+        </div>
+        <div class="card-body location-body">
+          <p class="location-text">We need your location to find nearby places</p>
+          <button id="getLocationBtn" class="location-btn">📍 Get My Location</button>
+          <p id="locationStatus" class="location-status"></p>
+        </div>
+      </div>
+    </section>
+    <section id="results" class="step-content">
+      <div class="results-header">
+        <h1 class="results-title">Here's What We Found!</h1>
+        <button id="startOverBtn" class="start-over-btn">🔄 Start Over</button>
+      </div>
+      <div id="aiSuggestionCard" class="ai-suggestion-card hidden">
+        <div class="ai-icon">🤖</div>
+        <div class="ai-content">
+          <h3>AI Suggestion</h3>
+          <p id="aiSuggestionText"></p>
+        </div>
+      </div>
+      <div class="places-section">
+        <h2 class="places-title">Nearby Places for You</h2>
+        <div id="placesGrid" class="places-grid"></div>
+      </div>
+    </section>
+    <nav class="navigation">
+      <button id="backBtn" class="nav-btn secondary hidden">← Back</button>
+      <button id="nextBtn" class="nav-btn primary" disabled>Next →</button>
+      <button id="getRecommendationsBtn" class="nav-btn gradient hidden">
+        ✨ Get My Recommendations!
+      </button>
+    </nav>
+    <div id="loadingModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="loading-spinner"></div>
+        <h3>Finding perfect places for you...</h3>
+        <p>This may take a few moments</p>
       </div>
     </div>
-  </section>
-
-  <!-- STEP 3: LOCATION -->
-  <section id="step3" class="step-content">
-    <div class="card">
-      <div class="card-header"><h2>📍 Where are you right now?</h2></div>
-      <div class="card-body location-body">
-        <p class="location-text">We'll find real venues near you — no fluff, just suggestions.</p>
-        <button id="getLocationBtn" class="location-btn">📍 Use my current location</button>
-        <p id="locationStatus" class="location-status"></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- RESULTS SECTION -->
-  <section id="results" class="step-content">
-    <div class="results-header">
-      <h2 class="results-title">✨ Your local picks</h2>
-      <button id="startOverBtn" class="start-over-btn">🔄 Start over</button>
-    </div>
-    <!-- human-like tip (no AI badge) -->
-    <div id="humanTip" class="curated-tip hidden">
-      <div class="tip-icon">📍</div>
-      <div class="tip-content">
-        <h4>💡 Local insider tip</h4>
-        <p id="tipMessage">Based on your mood, we found these real spots around you.</p>
-      </div>
-    </div>
-    <div class="places-section">
-      <h3 style="font-weight: 500; margin-bottom: 0.75rem;">🏙️ Nearby places</h3>
-      <div id="placesGrid" class="places-grid"></div>
-    </div>
-  </section>
-
-  <nav class="navigation">
-    <button id="backBtn" class="nav-btn secondary hidden">← Back</button>
-    <button id="nextBtn" class="nav-btn primary" disabled>Next →</button>
-    <button id="getRecommendationsBtn" class="nav-btn gradient hidden">✨ Show me places</button>
-  </nav>
-
-  <div id="loadingModal" class="modal hidden">
-    <div class="modal-content">
-      <div class="loading-spinner"></div>
-      <h3>Looking nearby...</h3>
-      <p>Checking real venues for you</p>
-    </div>
-  </div>
-</main>
-
-<script>
-  // ----- REALISTIC DATA + LOCALSTORAGE STATE (no AI prompts, just genuine helpers)
-  const moods = [
-    { id: "bored", emoji: "😴", label: "Bored", desc: "Need excitement" },
-    { id: "anxious", emoji: "😰", label: "Anxious", desc: "Need to relax" },
-    { id: "curious", emoji: "🤔", label: "Curious", desc: "Explore" },
-    { id: "energetic", emoji: "⚡", label: "Energetic", desc: "Active fun" },
-    { id: "hungry", emoji: "🍽️", label: "Hungry", desc: "Grab food" },
-    { id: "social", emoji: "👥", label: "Social", desc: "Meet people" },
-    { id: "peaceful", emoji: "🧘", label: "Peaceful", desc: "Chill vibes" },
-    { id: "adventurous", emoji: "🗺️", label: "Adventurous", desc: "Explore outdoors" }
-  ];
-
-  const timeOptionsArr = [
-    { value: "30min", icon: "⏰", label: "30 minutes", desc: "Quick pit stop" },
-    { value: "1hour", icon: "🕐", label: "1 hour", desc: "Short outing" },
-    { value: "2hours", icon: "🕑", label: "2 hours", desc: "Proper break" },
-    { value: "fullday", icon: "🌞", label: "Full day", desc: "All day experience" }
-  ];
-
-  // Mock realistic place generator based on mood & time & coords (human-like variability)
-  function generateNearbyPlaces(moodId, timeValue, lat, lng) {
-    // Simulated realistic data based on mood mapping — real world categories
-    const moodToCategory = {
-      bored: ["arcade", "bowling", "escape room", "movie theater"],
-      anxious: ["tea house", "spa", "quiet park", "library cafe"],
-      curious: ["museum", "bookstore", "market", "historical site"],
-      energetic: ["rock climbing", "dance studio", "gym", "go-kart"],
-      hungry: ["pizzeria", "burgers", "sushi spot", "taco joint"],
-      social: ["brewery", "karaoke bar", "board game cafe", "wine bar"],
-      peaceful: ["botanical garden", "lake view", "zen center", "art gallery"],
-      adventurous: ["hiking trail", "kayaking", "zip line", "bike rental"]
-    };
-    let cats = moodToCategory[moodId] || ["cafe", "restaurant", "park"];
-    // time filter: full day gives more destinations / detailed
-    let count = timeValue === "fullday" ? 5 : (timeValue === "2hours" ? 4 : 3);
-    let places = [];
-    for (let i = 0; i < count; i++) {
-      let category = cats[i % cats.length];
-      let rating = (3.5 + Math.random() * 1.5).toFixed(1);
-      let openNow = Math.random() > 0.3;
-      places.push({
-        name: `${category.charAt(0).toUpperCase() + category.slice(1)} ${['Spot','Hub','Lounge','Place','Corner'][i % 5]}`,
-        rating: rating,
-        vicinity: `${Math.floor(Math.random() * 300)} Main St, nearby`,
-        types: [category],
-        openNow: openNow,
-        lat: lat + (Math.random() - 0.5) * 0.02,
-        lng: lng + (Math.random() - 0.5) * 0.02
-      });
-    }
-    return places;
-  }
-
-  // human tip text
-  function getTipText(mood, time) {
-    const tips = {
-      bored: "Try an arcade or bowling alley nearby — quick fun!",
-      anxious: "Find a calm tea room or a green park to breathe.",
-      curious: "Check out local museums or hidden bookshops.",
-      energetic: "Active spots like climbing gyms or outdoor tracks.",
-      hungry: "We spotted some highly-rated food spots!",
-      social: "Head to a pub or social gaming cafe.",
-      peaceful: "Serenity awaits at gardens or quiet viewpoints.",
-      adventurous: "Trails and outdoor adventures are ready!"
-    };
-    let base = tips[mood] || "Explore these local favorites!";
-    if(time === "fullday") base += " Perfect for a full adventure.";
-    return base;
-  }
-
-  // App state
-  let currentStep = 1;
-  let selectedMood = null;
-  let selectedTime = null;
-  let userLocation = null;
-  let currentPlaces = [];
-
-  const stepContents = {
-    1: document.getElementById('step1'),
-    2: document.getElementById('step2'),
-    3: document.getElementById('step3'),
-    results: document.getElementById('results')
-  };
-  const backBtn = document.getElementById('backBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const getRecoBtn = document.getElementById('getRecommendationsBtn');
-  const startOverBtn = document.getElementById('startOverBtn');
-  const loadingModal = document.getElementById('loadingModal');
-  const placesGrid = document.getElementById('placesGrid');
-  const humanTipDiv = document.getElementById('humanTip');
-  const tipMessageSpan = document.getElementById('tipMessage');
-
-  function updateProgressAndNav() {
-    // update step indicators
-    for(let i=1; i<=3; i++) {
-      const stepDiv = document.querySelector(`.step-indicator[data-step="${i}"]`);
-      if(stepDiv) {
-        stepDiv.classList.remove('active','completed');
-        if(i < currentStep) stepDiv.classList.add('completed');
-        else if(i === currentStep) stepDiv.classList.add('active');
-      }
-    }
-    const lines = document.querySelectorAll('.step-line');
-    lines.forEach((line,idx) => {
-      if(idx+1 < currentStep) line.classList.add('active');
-      else line.classList.remove('active');
-    });
-    // show/hide steps
-    Object.keys(stepContents).forEach(key => {
-      if(key === 'results') {
-        if(currentStep === 4) stepContents[key].classList.add('active');
-        else stepContents[key].classList.remove('active');
-      } else {
-        if(currentStep === parseInt(key)) stepContents[key].classList.add('active');
-        else stepContents[key].classList.remove('active');
-      }
-    });
-    // buttons
-    if(currentStep === 3) {
-      backBtn.classList.remove('hidden');
-      nextBtn.classList.add('hidden');
-      getRecoBtn.classList.remove('hidden');
-    } else if(currentStep === 4) {
-      backBtn.classList.add('hidden');
-      nextBtn.classList.add('hidden');
-      getRecoBtn.classList.add('hidden');
-    } else {
-      backBtn.classList.toggle('hidden', currentStep === 1);
-      nextBtn.classList.remove('hidden');
-      getRecoBtn.classList.add('hidden');
-    }
-    // next button enabled condition
-    if(currentStep === 1) nextBtn.disabled = !selectedMood;
-    else if(currentStep === 2) nextBtn.disabled = !selectedTime;
-    else nextBtn.disabled = false;
-  }
-
-  function goToStep(step) {
-    if(step < 1) step = 1;
-    if(step > 4) step = 4;
-    currentStep = step;
-    updateProgressAndNav();
-    if(step === 4 && userLocation && selectedMood && selectedTime) {
-      renderRecommendations();
-    }
-  }
-
-  async function fetchLocation() {
-    const statusP = document.getElementById('locationStatus');
-    statusP.innerHTML = '<span>📍 Requesting location...</span>';
-    return new Promise((resolve, reject) => {
-      if(!navigator.geolocation) {
-        statusP.innerHTML = '<span class="status-error">❌ Geolocation not supported</span>';
-        reject(new Error("no geo"));
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-          statusP.innerHTML = `<span class="status-success">✅ Location set: ${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}</span>`;
-          resolve(userLocation);
-        },
-        (err) => {
-          statusP.innerHTML = `<span class="status-error">⚠️ Couldn't get location: ${err.message}. Using fallback city center.</span>`;
-          userLocation = { lat: 40.7128, lng: -74.0060 }; // realistic fallback NYC
-          resolve(userLocation);
-        }
-      );
-    });
-  }
-
-  async function renderRecommendations() {
-    if(!userLocation) {
-      alert("Please allow location first.");
-      return;
-    }
-    loadingModal.classList.remove('hidden');
-    setTimeout(async () => {
-      try {
-        const places = generateNearbyPlaces(selectedMood, selectedTime, userLocation.lat, userLocation.lng);
-        currentPlaces = places;
-        displayPlaces(places);
-        const tipText = getTipText(selectedMood, selectedTime);
-        tipMessageSpan.innerText = tipText;
-        humanTipDiv.classList.remove('hidden');
-      } catch(e) { console.warn(e); }
-      finally { loadingModal.classList.add('hidden'); }
-    }, 600);
-  }
-
-  function displayPlaces(places) {
-    if(!placesGrid) return;
-    placesGrid.innerHTML = '';
-    if(places.length === 0) {
-      placesGrid.innerHTML = '<div class="place-card">No places found nearby, try broader mood.</div>';
-      return;
-    }
-    places.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'place-card';
-      card.innerHTML = `
-        <div class="place-name"><span>${p.name}</span><span class="place-rating">⭐ ${p.rating}</span></div>
-        <div class="place-address">📍 ${p.vicinity}</div>
-        <div class="place-info"><span class="place-type">${p.types[0]}</span><span class="place-status ${p.openNow ? 'open' : 'closed'}">${p.openNow ? '🟢 Open now' : '🔴 May be closed'}</span></div>
-        <button class="place-btn" data-place='${JSON.stringify(p)}'>🧭 Get directions (mock)</button>
-      `;
-      placesGrid.appendChild(card);
-    });
-    document.querySelectorAll('.place-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const data = JSON.parse(btn.getAttribute('data-place'));
-        alert(`📍 ${data.name}\n${data.vicinity}\nOpen Google Maps feature would open here. (realistic demo)`);
-      });
-    });
-  }
-
-  // Event Listeners
-  function buildMoodGrid() {
-    const grid = document.getElementById('moodGrid');
-    grid.innerHTML = '';
-    moods.forEach(m => {
-      const btn = document.createElement('button');
-      btn.className = 'mood-btn';
-      btn.dataset.mood = m.id;
-      btn.innerHTML = `<span class="mood-emoji">${m.emoji}</span><span class="mood-label">${m.label}</span><span class="mood-desc">${m.desc}</span>`;
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        selectedMood = m.id;
-        nextBtn.disabled = false;
-      });
-      grid.appendChild(btn);
-    });
-  }
-
-  function buildTimeOptions() {
-    const container = document.getElementById('timeOptions');
-    container.innerHTML = '';
-    timeOptionsArr.forEach(t => {
-      const btn = document.createElement('button');
-      btn.className = 'time-btn';
-      btn.dataset.time = t.value;
-      btn.innerHTML = `<span class="time-icon">${t.icon}</span><div><div class="time-label">${t.label}</div><div class="time-desc">${t.desc}</div></div>`;
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        selectedTime = t.value;
-        nextBtn.disabled = false;
-      });
-      container.appendChild(btn);
-    });
-  }
-
-  document.getElementById('getLocationBtn').addEventListener('click', async () => {
-    await fetchLocation();
-    const locStatus = document.getElementById('locationStatus');
-    if(userLocation) getRecoBtn.disabled = false;
-  });
-
-  nextBtn.addEventListener('click', () => {
-    if(currentStep === 1 && !selectedMood) return;
-    if(currentStep === 2 && !selectedTime) return;
-    goToStep(currentStep + 1);
-  });
-  backBtn.addEventListener('click', () => goToStep(currentStep - 1));
-  getRecoBtn.addEventListener('click', async () => {
-    if(!userLocation) {
-      await fetchLocation();
-    }
-    if(userLocation && selectedMood && selectedTime) {
-      goToStep(4);
-    } else alert("Please set location first.");
-  });
-  startOverBtn.addEventListener('click', () => {
-    selectedMood = null;
-    selectedTime = null;
-    userLocation = null;
-    currentPlaces = [];
-    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
-    document.getElementById('locationStatus').innerHTML = '';
-    humanTipDiv.classList.add('hidden');
-    currentStep = 1;
-    updateProgressAndNav();
-    nextBtn.disabled = true;
-  });
-
-  buildMoodGrid();
-  buildTimeOptions();
-  updateProgressAndNav();
-  nextBtn.disabled = true;
-  getRecoBtn.disabled = false;
-</script>
+  </main>
+<script src="js/location.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
