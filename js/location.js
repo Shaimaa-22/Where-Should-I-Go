@@ -2,8 +2,8 @@ class LocationService {
   static getCurrentLocation() {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject("Geolocation is not supported by this browser.");
-        return;
+        reject("Geolocation is not supported by this browser.")
+        return
       }
 
       navigator.geolocation.getCurrentPosition(
@@ -11,35 +11,33 @@ class LocationService {
           resolve({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-          });
+          })
         },
         (error) => {
-          let message = "Unable to retrieve location.";
+          let message = "Unable to retrieve location."
 
           switch (error.code) {
             case error.PERMISSION_DENIED:
-              message = "Location access denied by user.";
-              break;
-
+              message = "Location access denied. You can still continue with a sample area."
+              break
             case error.POSITION_UNAVAILABLE:
-              message = "Location information is unavailable.";
-              break;
-
+              message = "Location information is unavailable."
+              break
             case error.TIMEOUT:
-              message = "Location request timed out.";
-              break;
+              message = "Location request timed out."
+              break
           }
 
-          reject(message);
+          reject(message)
         },
         {
           enableHighAccuracy: false,
           timeout: 30000,
-          maximumAge: Infinity,
-        }
-      );
-    });
+          maximumAge: Number.POSITIVE_INFINITY,
+        },
+      )
+    })
   }
 }
 
-window.LocationService = LocationService;
+window.LocationService = LocationService
