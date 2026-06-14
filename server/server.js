@@ -35,15 +35,22 @@ app.post("/api/places", async (req, res) => {
     }
 
     const categories = {
-      bored: "entertainment",
-      anxious: "leisure.park",
-      curious: "education",
-      energetic: "sport",
-      hungry: "catering.restaurant",
-      social: "catering.cafe",
-      peaceful: "leisure.park",
-      adventurous: "tourism",
-    };
+  bored: "entertainment,commercial.shopping_mall",
+
+  anxious: "leisure.park,catering.cafe",
+
+  curious: "tourism.sights,entertainment.culture,museum",
+
+  energetic: "sport.fitness,sport",
+
+  hungry: "catering.restaurant,catering.fast_food,catering.cafe",
+
+  social: "catering.cafe,catering.restaurant,entertainment",
+
+  peaceful: "leisure.park,natural,entertainment.culture",
+
+  adventurous: "tourism.sights,natural,sport",
+};
 
     const category = categories[mood] || "catering.restaurant";
 
