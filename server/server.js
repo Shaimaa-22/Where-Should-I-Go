@@ -95,6 +95,14 @@ Give one short recommendation.
   }
 });
 
+app.get("/", (req, res) => {
+  res.json({
+    status: "Backend Running",
+    googleKey: !!process.env.GOOGLE_PLACES_API_KEY,
+    openrouterKey: !!process.env.OPENROUTER_API_KEY,
+  });
+});
+
 app.listen(process.env.PORT, () => {
   console.log(
     `Server running on port ${process.env.PORT}`
