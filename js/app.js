@@ -125,17 +125,15 @@ class WhereToGoApp {
     UI.showLoading();
 
     try {
-      const [aiSuggestion, places] = await Promise.all([
-        this.getAISuggestion(),
-        this.getNearbyPlaces(),
-      ]);
+      const aiSuggestion = await this.getAISuggestion();
+      const places = await this.getNearbyPlaces();
 
       UI.hideLoading();
       UI.displayResults(aiSuggestion, places);
     } catch (error) {
       UI.hideLoading();
-      alert("Sorry, there was an error getting your recommendations.");
       console.error(error);
+      alert("Sorry, there was an error getting your recommendations.");
     }
   }
 
@@ -170,7 +168,10 @@ class WhereToGoApp {
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return suggestions[this.selectedMood];
+    return (
+      suggestions[this.selectedMood] ||
+      "Here are some places that may fit your mood."
+    );
   }
 
   async getNearbyPlaces() {
