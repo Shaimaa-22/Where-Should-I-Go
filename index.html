@@ -1,175 +1,268 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="paper">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Where Should I Go?</title>
+  <meta name="theme-color" content="#f3ead9" />
+  <meta name="description" content="Tell us your mood and how much time you have — we'll point you to real places worth visiting nearby." />
+  <title>Where Should I Go? — A Local Guide</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 
 <body>
   <main class="container">
 
     <header class="header">
-      <h1 class="title">Where Should I Go?</h1>
-      <p class="subtitle">Tell us your mood and we'll suggest the perfect nearby places!</p>
+      <p class="eyebrow">A pocket guide to your city</p>
+      <h1 class="title">Where should <em>you</em> go?</h1>
+      <p class="subtitle">Tell us how you feel and how much time you have. We'll point you toward real places nearby that are worth the trip.</p>
     </header>
 
-    <section class="progress-container">
-      <div class="progress-steps">
-        <div class="step-indicator active" data-step="1"><span>1</span></div>
-        <div class="step-line"></div>
-        <div class="step-indicator" data-step="2"><span>2</span></div>
-        <div class="step-line"></div>
-        <div class="step-indicator" data-step="3"><span>3</span></div>
-      </div>
+    <section class="progress-container" aria-label="Progress">
+      <ol class="progress-steps">
+        <li class="step-indicator active" data-step="1"><span class="step-num">1</span><span class="step-name">Mood</span></li>
+        <li class="step-line"></li>
+        <li class="step-indicator" data-step="2"><span class="step-num">2</span><span class="step-name">Time</span></li>
+        <li class="step-line"></li>
+        <li class="step-indicator" data-step="3"><span class="step-num">3</span><span class="step-name">Place</span></li>
+      </ol>
     </section>
 
     <section id="step1" class="step-content active">
       <div class="card">
         <div class="card-header">
-          <h2>😊 What's your mood?</h2>
+          <span class="card-kicker">Step one</span>
+          <h2>What's your mood today?</h2>
+          <p class="card-hint">Pick the one that fits right now.</p>
         </div>
         <div class="card-body">
           <div class="mood-grid">
-            <button class="mood-btn" data-mood="bored">
-              <span class="mood-emoji">😴</span>
+            <button class="mood-btn" data-mood="bored" aria-pressed="false">
+              <span class="mood-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+              </span>
               <span class="mood-label">Bored</span>
-              <span class="mood-desc">Need excitement</span>
+              <span class="mood-desc">Need a spark</span>
             </button>
 
-            <button class="mood-btn" data-mood="anxious">
-              <span class="mood-emoji">😰</span>
+            <button class="mood-btn" data-mood="anxious" aria-pressed="false">
+              <span class="mood-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2"/><path d="M17.73 4.73A2.5 2.5 0 1 1 19.5 9H2"/><path d="M12.59 19.41A2 2 0 1 0 14 16H2"/></svg>
+              </span>
               <span class="mood-label">Anxious</span>
-              <span class="mood-desc">Need to relax</span>
+              <span class="mood-desc">Want to unwind</span>
             </button>
 
-            <button class="mood-btn" data-mood="curious">
-              <span class="mood-emoji">🤔</span>
+            <button class="mood-btn" data-mood="curious" aria-pressed="false">
+              <span class="mood-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+              </span>
               <span class="mood-label">Curious</span>
-              <span class="mood-desc">Want to explore</span>
+              <span class="mood-desc">Ready to explore</span>
             </button>
 
-            <button class="mood-btn" data-mood="energetic">
-              <span class="mood-emoji">⚡</span>
+            <button class="mood-btn" data-mood="energetic" aria-pressed="false">
+              <span class="mood-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </span>
               <span class="mood-label">Energetic</span>
               <span class="mood-desc">Full of energy</span>
             </button>
 
-            <button class="mood-btn" data-mood="hungry">
-              <span class="mood-emoji">🍽️</span>
+            <button class="mood-btn" data-mood="hungry" aria-pressed="false">
+              <span class="mood-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M5 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+              </span>
               <span class="mood-label">Hungry</span>
               <span class="mood-desc">Looking for food</span>
             </button>
 
-            <button class="mood-btn" data-mood="social">
-              <span class="mood-emoji">👥</span>
+            <button class="mood-btn" data-mood="social" aria-pressed="false">
+              <span class="mood-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
               <span class="mood-label">Social</span>
-              <span class="mood-desc">Want to meet people</span>
+              <span class="mood-desc">Want company</span>
             </button>
 
-            <button class="mood-btn" data-mood="peaceful">
-              <span class="mood-emoji">🧘</span>
+            <button class="mood-btn" data-mood="peaceful" aria-pressed="false">
+              <span class="mood-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
+              </span>
               <span class="mood-label">Peaceful</span>
               <span class="mood-desc">Seeking calm</span>
             </button>
 
-            <button class="mood-btn" data-mood="adventurous">
-              <span class="mood-emoji">🗺️</span>
+            <button class="mood-btn" data-mood="adventurous" aria-pressed="false">
+              <span class="mood-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+              </span>
               <span class="mood-label">Adventurous</span>
-              <span class="mood-desc">Ready for adventure</span>
+              <span class="mood-desc">Up for anything</span>
             </button>
           </div>
         </div>
       </div>
     </section>
+
     <section id="step2" class="step-content">
       <div class="card">
         <div class="card-header">
-          <h2>⏰ How much time do you have?</h2>
+          <span class="card-kicker">Step two</span>
+          <h2>How much time do you have?</h2>
+          <p class="card-hint">We'll match the outing to your window.</p>
         </div>
         <div class="card-body">
           <div class="time-options">
             <button class="time-btn" data-time="30min">
-              <span class="time-icon">⏰</span>
+              <span class="time-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="12" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
+              </span>
               <span class="time-info">
                 <span class="time-label">30 minutes</span>
-                <span class="time-desc">Quick activity</span>
+                <span class="time-desc">A quick break nearby</span>
+              </span>
+              <span class="time-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </span>
             </button>
+
             <button class="time-btn" data-time="1hour">
-              <span class="time-icon">🕐</span>
+              <span class="time-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
               <span class="time-info">
                 <span class="time-label">1 hour</span>
-                <span class="time-desc">Short outing</span>
+                <span class="time-desc">A short outing</span>
+              </span>
+              <span class="time-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </span>
             </button>
+
             <button class="time-btn" data-time="2hours">
-              <span class="time-icon">🕑</span>
+              <span class="time-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+              </span>
               <span class="time-info">
                 <span class="time-label">2 hours</span>
-                <span class="time-desc">Half day adventure</span>
+                <span class="time-desc">A proper half-day plan</span>
+              </span>
+              <span class="time-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </span>
             </button>
+
             <button class="time-btn" data-time="fullday">
-              <span class="time-icon">🌞</span>
+              <span class="time-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              </span>
               <span class="time-info">
-                <span class="time-label">Full day</span>
-                <span class="time-desc">All day experience</span>
+                <span class="time-label">A full day</span>
+                <span class="time-desc">Make a day of it</span>
+              </span>
+              <span class="time-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </span>
             </button>
           </div>
         </div>
       </div>
     </section>
+
     <section id="step3" class="step-content">
       <div class="card">
         <div class="card-header">
-          <h2>📍 Where are you?</h2>
+          <span class="card-kicker">Step three</span>
+          <h2>Where are you right now?</h2>
+          <p class="card-hint">We use your location to find places within reach.</p>
         </div>
         <div class="card-body location-body">
-          <p class="location-text">We need your location to find nearby places</p>
-          <button id="getLocationBtn" class="location-btn">📍 Get My Location</button>
+          <span class="location-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <p class="location-text">Share your location and we'll do the rest. Nothing is stored.</p>
+          <button id="getLocationBtn" class="location-btn">
+            <span class="btn-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <span class="btn-text">Use my location</span>
+          </button>
           <p id="locationStatus" class="location-status"></p>
         </div>
       </div>
     </section>
+
     <section id="results" class="step-content">
       <div class="results-header">
-        <h1 class="results-title">Here's What We Found!</h1>
-        <button id="startOverBtn" class="start-over-btn">🔄 Start Over</button>
+        <p class="eyebrow">Your itinerary</p>
+        <h2 class="results-title">Here's where to go</h2>
+        <button id="startOverBtn" class="start-over-btn">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          </span>
+          <span class="btn-text">Start over</span>
+        </button>
       </div>
+
       <div id="aiSuggestionCard" class="ai-suggestion-card hidden">
-        <div class="ai-icon">🤖</div>
+        <span class="ai-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z"/></svg>
+        </span>
         <div class="ai-content">
-          <h3>AI Suggestion</h3>
+          <span class="ai-kicker">A note for you</span>
           <p id="aiSuggestionText"></p>
         </div>
       </div>
+
       <div class="places-section">
-        <h2 class="places-title">Nearby Places for You</h2>
+        <div class="places-heading">
+          <h3 class="places-title">Places nearby</h3>
+          <span class="places-rule"></span>
+        </div>
         <div id="placesGrid" class="places-grid"></div>
       </div>
     </section>
-    <nav class="navigation">
-      <button id="backBtn" class="nav-btn secondary hidden">← Back</button>
-      <button id="nextBtn" class="nav-btn primary" disabled>Next →</button>
-      <button id="getRecommendationsBtn" class="nav-btn gradient hidden">
-        ✨ Get My Recommendations!
+
+    <nav class="navigation" aria-label="Wizard navigation">
+      <button id="backBtn" class="nav-btn secondary hidden">
+        <span class="btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <span class="btn-text">Back</span>
+      </button>
+      <button id="nextBtn" class="nav-btn primary" disabled>
+        <span class="btn-text">Continue</span>
+        <span class="btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </span>
+      </button>
+      <button id="getRecommendationsBtn" class="nav-btn primary hidden">
+        <span class="btn-text">Find my places</span>
+        <span class="btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z"/></svg>
+        </span>
       </button>
     </nav>
-    <div id="loadingModal" class="modal hidden">
+
+    <div id="loadingModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Finding places">
       <div class="modal-content">
-        <div class="loading-spinner"></div>
-        <h3>Finding perfect places for you...</h3>
-        <p>This may take a few moments</p>
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <h3>Charting your route…</h3>
+        <p>Hold tight while we scout the neighborhood.</p>
       </div>
     </div>
   </main>
-<script src="js/location.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/app.js"></script>
+
+  <footer class="site-footer">
+    <p>Made for wanderers · Where Should I Go?</p>
+  </footer>
+
+  <script src="/js/location.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 </html>
