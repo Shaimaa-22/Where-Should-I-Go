@@ -60,21 +60,20 @@ class UI {
     }
   }
 
-  static showLoading() {
-    document.getElementById("loadingModal").style.display = "flex";
-  }
+static showLoading() {
+  document.getElementById("loadingModal").classList.remove("hidden");
+}
 
-  static hideLoading() {
-    document.getElementById("loadingModal").style.display = "none";
-  }
+static hideLoading() {
+  document.getElementById("loadingModal").classList.add("hidden");
+}
 
   static displayResults(aiSuggestion, places) {
     const aiCard = document.getElementById("aiSuggestionCard");
     const aiText = document.getElementById("aiSuggestionText");
 
     aiText.textContent = aiSuggestion;
-    aiCard.style.display = "flex";
-
+aiCard.classList.remove("hidden");
     const placesGrid = document.getElementById("placesGrid");
     placesGrid.innerHTML = "";
 
