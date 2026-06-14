@@ -1,3 +1,5 @@
+const API_BASE_URL = "https://where-should-i-go.onrender.com";
+
 class WhereToGoApp {
   constructor() {
     this.currentStep = 1;
@@ -125,8 +127,8 @@ class WhereToGoApp {
     UI.showLoading();
 
     try {
-      const aiSuggestion = await this.getAISuggestion();
       const places = await this.getNearbyPlaces();
+      const aiSuggestion = await this.getAISuggestion(places);
 
       UI.hideLoading();
       UI.displayResults(aiSuggestion, places);
@@ -137,47 +139,45 @@ class WhereToGoApp {
     }
   }
 
-  async getAISuggestion() {
-    const currentHour = new Date().getHours();
+  async getNearbyPlaces() {
+    const response = await fetch(`${API_BASE_URL}/api/places`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mood: this.selectedMood,
+        lat: this.userLocation.lat,
+        lng: this.userLocation.lng,
+      }),
+    });
 
-    let timeOfDay = "morning";
-
-    if (currentHour >= 12 && currentHour < 17) {
-      timeOfDay = "afternoon";
-    } else if (currentHour >= 17) {
-      timeOfDay = "evening";
+    if (!response.ok) {
+      throw new Error("Failed to fetch places");
     }
 
-    const suggestions = {
-      bored: `Since you're feeling bored and have ${this.selectedTime} to spare during this ${timeOfDay}, I recommend visiting an entertainment venue, shopping area, or activity center.`,
-
-      anxious: `Since you're feeling anxious and have ${this.selectedTime} during this ${timeOfDay}, I recommend a peaceful park, cozy café, or quiet library.`,
-
-      curious: `Your curious mood is perfect for a museum, gallery, cultural center, or bookstore during this ${timeOfDay}.`,
-
-      energetic: `With all that energy and ${this.selectedTime} available, try a gym, sports center, park, or recreation area.`,
-
-      hungry: `Since you're hungry and have ${this.selectedTime}, explore restaurants, cafés, bakeries, or local food markets.`,
-
-      social: `Since you're feeling social, restaurants, cafés, community spaces, or live music places would be great.`,
-
-      peaceful: `For a peaceful mood, try a park, library, spa, meditation center, or quiet café.`,
-
-      adventurous: `Your adventurous mood is perfect for hiking trails, outdoor activities, tourist attractions, or unique local spots.`,
-    };
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    return (
-      suggestions[this.selectedMood] ||
-      "Here are some places that may fit your mood."
-    );
+    return await response.json();
   }
 
-  async getNearbyPlaces() {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+  async getAISuggestion(places) {
+    const response = await fetch(`${API_BASE_URL}/api/suggestion`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mood: this.selectedMood,
+        time: this.selectedTime,
+        places: places,
+      }),
+    });
 
-    return window.placesData[this.selectedMood] || window.placesData.curious;
+    if (!response.ok) {
+      throw new Error("Failed to generate suggestion");
+    }
+
+    const data = await response.json();
+    return data.suggestion;
   }
 
   startOver() {
@@ -200,7 +200,7 @@ class WhereToGoApp {
     locationBtn.disabled = false;
 
     document.getElementById("locationStatus").innerHTML = "";
-    document.getElementById("aiSuggestionCard").style.display = "none";
+    document.getElementById("aiSuggestionCard").classList.add("hidden");
 
     this.updateUI();
   }
